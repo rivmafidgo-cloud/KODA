@@ -1,0 +1,38 @@
+[
+  {
+    "id": "salumeria",
+    "name": "Salumeria",
+    "icon": "🥓",
+    "color": "bg-red-500/20 text-red-100 border-red-500/30"
+  },
+  {
+    "id": "macelleria",
+    "name": "Macelleria",
+    "icon": "🥩",
+    "color": "bg-rose-500/20 text-rose-100 border-rose-500/30"
+  },
+  {
+    "id": "pescheria",
+    "name": "Pescheria",
+    "icon": "🐟",
+    "color": "bg-blue-500/20 text-blue-100 border-blue-500/30"
+  },
+  {
+    "id": "panetteria",
+    "name": "Panetteria",
+    "icon": "🥖",
+    "color": "bg-amber-500/20 text-amber-100 border-amber-500/30"
+  },
+  {
+    "id": "ortofrutta",
+    "name": "Ortofrutta",
+    "icon": "🥬",
+    "color": "bg-green-500/20 text-green-100 border-green-500/30"
+  },
+  {
+    "id": "casse",
+    "name": "Casse Veloci",
+    "icon": "🛒",
+    "color": "bg-indigo-500/20 text-indigo-100 border-indigo-500/30"
+  }
+]

@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* KIOSK MODE CONFIGURATION */
+html, body, app-root {
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  display: block;
+}
+
+html, body {
+  
+  /* Disabilita lo scroll */
+  overflow: hidden;
+  
+  /* Nascondi il cursore del mouse */
+  cursor: none !important;
+  
+  /* Impedisci la selezione del testo */
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  
+  /* Rimuovi i feedback visivi del tocco (tap highlight) */
+  -webkit-tap-highlight-color: transparent;
+  
+  /* Font moderno sans-serif */
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  
+  background-color: theme('colors.brand.light'); /* brand-light */
+}
+
+/* Impedisce azioni di default del browser come il pull-to-refresh sui touch */
+body {
+  overscroll-behavior-y: none;
+  touch-action: pan-x pan-y;
+}
+
+/* Tutti gli elementi cliccabili dovrebbero esplicitamente forzare cursor: none in Kiosk mode */
+a, button, [role="button"], input, select, textarea {
+  cursor: none !important;
+}
