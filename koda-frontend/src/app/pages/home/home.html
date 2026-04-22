@@ -25,7 +25,7 @@
       </h2>
     </div>
 
-    <!-- Departments Grid -->
+    <!-- Departments Dynamic Grid -->
     <div class="relative z-20 flex-1 flex flex-col items-center justify-center w-full px-6 pb-6">
       
       <!-- Loading state -->
@@ -50,18 +50,28 @@
           </button>
         </div>
       } @else {
-        <div class="grid grid-cols-2 gap-4 md:gap-6 w-full max-w-[90vw] md:max-w-2xl">
+        <!-- Fluid Auto-Resizing Layout -->
+        <div class="flex flex-wrap justify-center content-center gap-5 md:gap-6 w-full max-w-[90vw] md:max-w-3xl transition-all duration-500">
           @for (dept of departments; track dept.id; let i = $index) {
             
-            <!-- Entry animation wrapper (staggered based on index) -->
-            <div class="animate-entry w-full" style="animation-delay: {{ (i * 0.1) + 0.2 }}s">
+            <!-- Dynamic Entry wrapper -->
+            <div class="animate-entry flex-grow flex-shrink-0 transition-all duration-500" 
+                 [ngClass]="{
+                   'basis-full max-w-[340px] md:max-w-[400px]': departments.length === 1,
+                   'basis-[calc(50%-1.5rem)] max-w-[340px]': departments.length > 1
+                 }"
+                 style="animation-delay: {{ (i * 0.1) + 0.2 }}s">
               
-              <!-- Continuous floating effect (offset so they don't move identically) -->
-              <div class="float-container w-full" style="animation-delay: {{ i * 0.3 }}s">
+              <!-- Continuous floating effect -->
+              <div class="float-container w-full h-full" style="animation-delay: {{ i * 0.3 }}s">
                 
                 <button 
                   (click)="selectDepartment(dept)"
-                  class="group relative overflow-hidden rounded-[2.5rem] border border-white/10 bg-[#1a1a24]/40 backdrop-blur-2xl shadow-[0_15px_35px_rgba(0,0,0,0.3)] focus:outline-none flex flex-col items-center justify-center py-6 px-4 w-full premium-shimmer interactive-card aspect-[4/3] max-h-[160px]"
+                  class="group relative overflow-hidden rounded-[2.5rem] border border-white/10 bg-[#1a1a24]/40 backdrop-blur-2xl shadow-[0_15px_35px_rgba(0,0,0,0.3)] focus:outline-none flex flex-col items-center justify-center py-6 px-4 w-full h-full premium-shimmer interactive-card transition-all duration-500"
+                  [ngClass]="{
+                    'aspect-square max-h-[400px]': departments.length === 1,
+                    'aspect-[4/3] max-h-[180px]': departments.length > 1
+                  }"
                 >
                   <!-- Glass inner highlight -->
                   <div class="absolute inset-0 bg-gradient-to-b from-white/10 to-transparent opacity-0 group-active:opacity-100 transition-opacity duration-300"></div>
@@ -70,13 +80,30 @@
                   <div class="absolute inset-0 opacity-20 group-active:opacity-40 transition-opacity duration-300 mix-blend-screen" [ngClass]="dept.color"></div>
                   
                   <div class="relative z-10 flex flex-col items-center justify-center h-full w-full">
-                    <!-- Premium Icon Container with internal pulse -->
-                    <div class="w-16 h-16 md:w-20 md:h-20 mb-3 rounded-[1.25rem] bg-[#2a2a36]/50 border border-white/5 flex items-center justify-center shadow-inner backdrop-blur-md transform transition-transform duration-500 group-hover:-translate-y-2 icon-glow" [ngClass]="dept.color">
-                      <span class="text-3xl md:text-4xl drop-shadow-xl">{{ dept.icon }}</span>
+                    <!-- Premium Icon Container -->
+                    <div class="mb-3 rounded-[1.25rem] bg-[#2a2a36]/50 border border-white/5 flex items-center justify-center shadow-inner backdrop-blur-md transform transition-all duration-500 group-hover:-translate-y-2 icon-glow" 
+                         [ngClass]="dept.color"
+                         [class.w-24]="departments.length === 1"
+                         [class.h-24]="departments.length === 1"
+                         [class.w-16]="departments.length > 1"
+                         [class.h-16]="departments.length > 1"
+                         [class.md:w-20]="departments.length > 1"
+                         [class.md:h-20]="departments.length > 1">
+                      <span class="drop-shadow-xl transition-all duration-500"
+                            [class.text-6xl]="departments.length === 1"
+                            [class.text-3xl]="departments.length > 1"
+                            [class.md:text-4xl]="departments.length > 1">
+                        {{ dept.icon }}
+                      </span>
                     </div>
                     
                     <!-- Typography -->
-                    <span class="text-base md:text-lg font-bold tracking-widest uppercase text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] leading-tight">{{ dept.name }}</span>
+                    <span class="font-bold tracking-widest uppercase text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] leading-tight transition-all duration-500"
+                          [class.text-2xl]="departments.length === 1"
+                          [class.text-base]="departments.length > 1"
+                          [class.md:text-lg]="departments.length > 1">
+                      {{ dept.name }}
+                    </span>
                   </div>
                   
                   <!-- Interactive Ripple -->
