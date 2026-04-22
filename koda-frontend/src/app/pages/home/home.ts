@@ -8,6 +8,10 @@ interface Product {
   name: string;
   departmentId: string;
   departmentName: string;
+  description: string;
+  price: string;
+  ingredients: string;
+  allergens: string[];
 }
 
 @Component({
@@ -34,20 +38,22 @@ export class Home implements OnInit, OnDestroy {
   searchQuery = '';
   searchResults: Product[] = [];
   isKeyboardVisible = true;
+  selectedProduct: Product | null = null;
   
   // Mock Database for Products
   private productDatabase: Product[] = [
-    { name: 'Prosciutto di Parma', departmentId: 'salumeria', departmentName: 'Salumeria' },
-    { name: 'Mortadella Bologna', departmentId: 'salumeria', departmentName: 'Salumeria' },
-    { name: 'Mozzarella di Bufala', departmentId: 'salumeria', departmentName: 'Salumeria' },
-    { name: 'Bistecca Fiorentina', departmentId: 'macelleria', departmentName: 'Macelleria' },
-    { name: 'Pollo Intero', departmentId: 'macelleria', departmentName: 'Macelleria' },
-    { name: 'Salmone Fresco', departmentId: 'pescheria', departmentName: 'Pescheria' },
-    { name: 'Branzino', departmentId: 'pescheria', departmentName: 'Pescheria' },
-    { name: 'Pane Integrale', departmentId: 'panetteria', departmentName: 'Panetteria' },
-    { name: 'Focaccia Ligure', departmentId: 'panetteria', departmentName: 'Panetteria' },
-    { name: 'Mele Fuji', departmentId: 'ortofrutta', departmentName: 'Ortofrutta' },
-    { name: 'Pomodori Pachino', departmentId: 'ortofrutta', departmentName: 'Ortofrutta' }
+    { name: 'Prosciutto di Parma', departmentId: 'salumeria', departmentName: 'Salumeria', description: 'Stagionato 24 mesi, dal sapore dolce e inconfondibile.', price: '€ 3.50 /etto', ingredients: 'Carne di suino, Sale.', allergens: [] },
+    { name: 'Mortadella Bologna', departmentId: 'salumeria', departmentName: 'Salumeria', description: 'Confezionata artigianalmente, con pistacchi interi freschi di Bronte.', price: '€ 1.80 /etto', ingredients: 'Carne di suino, Tripping di suino, Sale, Pistacchi, Aromi naturali, Spezie.', allergens: ['Pistacchi'] },
+    { name: 'Mozzarella di Bufala', departmentId: 'salumeria', departmentName: 'Salumeria', description: 'Campana DOP, morbidissima e freschissima di giornata.', price: '€ 4.00 /pezzo', ingredients: 'Latte di bufala pastorizzato, Caglio, Sale.', allergens: ['Latte'] },
+    { name: 'Bistecca Fiorentina', departmentId: 'macelleria', departmentName: 'Macelleria', description: 'Carne di razza Chianina frollata 30 giorni. Taglio spesso e succulento.', price: '€ 45.00 /kg', ingredients: 'Carne bovina 100%.', allergens: [] },
+    { name: 'Pollo Intero', departmentId: 'macelleria', departmentName: 'Macelleria', description: 'Ruspante allevato a terra senza antibiotici, ideale per arrosto.', price: '€ 8.50 /kg', ingredients: 'Carne avicola 100%.', allergens: [] },
+    { name: 'Salmone Fresco', departmentId: 'pescheria', departmentName: 'Pescheria', description: 'Salmone dell\'Atlantico eviscerato. Ricco di Omega-3.', price: '€ 22.00 /kg', ingredients: 'Salmone (Salmo Salar).', allergens: ['Pesce'] },
+    { name: 'Branzino', departmentId: 'pescheria', departmentName: 'Pescheria', description: 'Pescato in mare aperto. Carne bianca, soda e saporita.', price: '€ 25.00 /kg', ingredients: 'Branzino (Dicentrarchus labrax).', allergens: ['Pesce'] },
+    { name: 'Pane Integrale', departmentId: 'panetteria', departmentName: 'Panetteria', description: 'Lievito madre e farine integrali macinate a pietra. Mollica soffice.', price: '€ 3.50 /kg', ingredients: 'Farina di grano tenero integrale, Acqua, Lievito madre, Sale, Malto d\'orzo.', allergens: ['Glutine'] },
+    { name: 'Focaccia Ligure', departmentId: 'panetteria', departmentName: 'Panetteria', description: 'Bassa, unta e irresistibile. Con sale grosso croccante.', price: '€ 12.00 /kg', ingredients: 'Farina di grano tenero tipo 00, Acqua, Olio extra vergine di oliva, Sale, Lievito di birra.', allergens: ['Glutine'] },
+    { name: 'Mele Fuji', departmentId: 'ortofrutta', departmentName: 'Ortofrutta', description: 'Croccanti, succose e molto dolci. Origine: Trentino Alto Adige.', price: '€ 2.50 /kg', ingredients: 'Mele fresche 100%.', allergens: [] },
+    { name: 'Pomodori Pachino', departmentId: 'ortofrutta', departmentName: 'Ortofrutta', description: 'Rosso intenso, sapore dolce e inimitabile.', price: '€ 4.50 /kg', ingredients: 'Pomodori freschi 100%.', allergens: [] },
+    { name: 'Torta della Nonna', departmentId: 'panetteria', departmentName: 'Panetteria', description: 'Pasta frolla friabile ripiena di crema pasticcera e ricoperta di pinoli.', price: '€ 18.00 /pz', ingredients: 'Farina, Uova, Zucchero, Burro, Latte, Limone, Pinoli.', allergens: ['Glutine', 'Uova', 'Latte', 'Pinoli'] }
   ];
 
   private adSubscription?: Subscription;
@@ -120,6 +126,7 @@ export class Home implements OnInit, OnDestroy {
   toggleSearch() {
     this.isSearchActive = true;
     this.isKeyboardVisible = true;
+    this.selectedProduct = null;
     this.searchQuery = '';
     this.searchResults = [];
     this.cdr.detectChanges();
@@ -128,6 +135,7 @@ export class Home implements OnInit, OnDestroy {
   closeSearch() {
     this.isSearchActive = false;
     this.isKeyboardVisible = true;
+    this.selectedProduct = null;
     this.searchQuery = '';
     this.searchResults = [];
     this.cdr.detectChanges();
@@ -184,10 +192,14 @@ export class Home implements OnInit, OnDestroy {
     this.cdr.detectChanges();
   }
   
-  selectProductDepartment(deptId: string) {
-    const dept = this.departments.find(d => d.id === deptId);
-    if (dept) {
-      this.selectDepartment(dept);
-    }
+  selectProductDepartment(product: Product) {
+    this.selectedProduct = product;
+    this.isKeyboardVisible = false;
+    this.cdr.detectChanges();
+  }
+
+  closeProductDetails() {
+    this.selectedProduct = null;
+    this.cdr.detectChanges();
   }
 }
