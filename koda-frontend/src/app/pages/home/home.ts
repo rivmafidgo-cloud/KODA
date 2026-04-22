@@ -4,6 +4,12 @@ import { Router } from '@angular/router';
 import { interval, Subscription } from 'rxjs';
 import { ConfigService, Department } from '../../services/config.service';
 
+interface Product {
+  name: string;
+  departmentId: string;
+  departmentName: string;
+}
+
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -23,6 +29,27 @@ export class Home implements OnInit, OnDestroy {
   ];
   currentAdIndex = 0;
   
+  // Search State
+  isSearchActive = false;
+  searchQuery = '';
+  searchResults: Product[] = [];
+  isKeyboardVisible = true;
+  
+  // Mock Database for Products
+  private productDatabase: Product[] = [
+    { name: 'Prosciutto di Parma', departmentId: 'salumeria', departmentName: 'Salumeria' },
+    { name: 'Mortadella Bologna', departmentId: 'salumeria', departmentName: 'Salumeria' },
+    { name: 'Mozzarella di Bufala', departmentId: 'salumeria', departmentName: 'Salumeria' },
+    { name: 'Bistecca Fiorentina', departmentId: 'macelleria', departmentName: 'Macelleria' },
+    { name: 'Pollo Intero', departmentId: 'macelleria', departmentName: 'Macelleria' },
+    { name: 'Salmone Fresco', departmentId: 'pescheria', departmentName: 'Pescheria' },
+    { name: 'Branzino', departmentId: 'pescheria', departmentName: 'Pescheria' },
+    { name: 'Pane Integrale', departmentId: 'panetteria', departmentName: 'Panetteria' },
+    { name: 'Focaccia Ligure', departmentId: 'panetteria', departmentName: 'Panetteria' },
+    { name: 'Mele Fuji', departmentId: 'ortofrutta', departmentName: 'Ortofrutta' },
+    { name: 'Pomodori Pachino', departmentId: 'ortofrutta', departmentName: 'Ortofrutta' }
+  ];
+
   private adSubscription?: Subscription;
   private configSub?: Subscription;
   private timeoutId?: any;
@@ -79,5 +106,88 @@ export class Home implements OnInit, OnDestroy {
 
   selectDepartment(dept: Department) {
     this.router.navigate(['/ticket', dept.id]);
+  }
+
+  // --- Search Logic ---
+  
+  // Custom Keyboard Layout
+  keyboardRows = [
+    ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
+    ['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],
+    ['Z', 'X', 'C', 'V', 'B', 'N', 'M', '⌫']
+  ];
+
+  toggleSearch() {
+    this.isSearchActive = true;
+    this.isKeyboardVisible = true;
+    this.searchQuery = '';
+    this.searchResults = [];
+    this.cdr.detectChanges();
+  }
+  
+  closeSearch() {
+    this.isSearchActive = false;
+    this.isKeyboardVisible = true;
+    this.searchQuery = '';
+    this.searchResults = [];
+    this.cdr.detectChanges();
+  }
+
+  showKeyboard() {
+    if (!this.isKeyboardVisible) {
+      this.isKeyboardVisible = true;
+      this.cdr.detectChanges();
+    }
+  }
+
+  hideKeyboard() {
+    if (this.isKeyboardVisible) {
+      this.isKeyboardVisible = false;
+      this.cdr.detectChanges();
+    }
+  }
+
+  // Handle virtual keyboard press
+  onKeyPress(key: string) {
+    this.searchQuery += key;
+    this.triggerSearch();
+  }
+
+  // Handle spacebar
+  onSpace() {
+    if (this.searchQuery.length > 0 && !this.searchQuery.endsWith(' ')) {
+      this.searchQuery += ' ';
+      this.triggerSearch();
+    }
+  }
+
+  // Handle backspace
+  onBackspace() {
+    if (this.searchQuery.length > 0) {
+      this.searchQuery = this.searchQuery.slice(0, -1);
+      this.triggerSearch();
+    }
+  }
+
+  // Actually filter the results
+  private triggerSearch() {
+    const query = this.searchQuery.toLowerCase().trim();
+    
+    if (query.length > 1) {
+      this.searchResults = this.productDatabase.filter(p => 
+        p.name.toLowerCase().includes(query) ||
+        p.departmentName.toLowerCase().includes(query)
+      );
+    } else {
+      this.searchResults = [];
+    }
+    this.cdr.detectChanges();
+  }
+  
+  selectProductDepartment(deptId: string) {
+    const dept = this.departments.find(d => d.id === deptId);
+    if (dept) {
+      this.selectDepartment(dept);
+    }
   }
 }
