@@ -1,68 +1,118 @@
-<!-- KODA Kiosk Vertical Layout (Optimized & Verified Responsiveness) -->
-<div class="w-full h-full min-h-screen flex flex-col bg-brand-dark overflow-hidden select-none">
+<!-- KODA Kiosk Vertical Layout - PREMIUM MODERN UI -->
+<div class="w-full h-full min-h-screen flex flex-col bg-[#0f0f13] overflow-hidden select-none font-sans">
   
   <!-- TOP SECTION: Departments (65%) -->
-  <div class="flex-[65] flex flex-col pt-10 px-6 pb-4 bg-gradient-to-b from-brand-dark to-gray-900 relative overflow-hidden">
+  <div class="flex-[65] flex flex-col relative overflow-hidden">
     
-    <!-- Subtle overlay -->
-    <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/stardust.png')] opacity-5 pointer-events-none"></div>
+    <!-- Ambient Glowing Orbs Background -->
+    <div class="absolute top-[-20%] left-[-20%] w-[70vw] h-[70vw] bg-brand-primary/20 rounded-full blur-[120px] mix-blend-screen pointer-events-none animate-pulse" style="animation-duration: 8s;"></div>
+    <div class="absolute bottom-[-10%] right-[-20%] w-[60vw] h-[60vw] bg-brand-secondary/20 rounded-full blur-[100px] mix-blend-screen pointer-events-none animate-pulse" style="animation-duration: 12s;"></div>
     
-    <!-- Header: Smaller and tighter -->
-    <div class="z-10 flex flex-col items-center mb-8 shrink-0">
-      <div class="flex items-center space-x-3 mb-1">
-        <div class="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20">
-          <span class="text-white text-lg font-bold">K</span>
+    <!-- Subtle Noise Texture -->
+    <div class="absolute inset-0 opacity-[0.03] pointer-events-none" style="background-image: url('data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.65%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E');"></div>
+    
+    <!-- Header: Sleek & Premium -->
+    <div class="relative z-20 flex flex-col items-center mt-10 mb-2 shrink-0 animate-entry" style="animation-delay: 0.1s;">
+      <div class="inline-flex items-center space-x-3 bg-white/5 border border-white/10 px-5 py-2 rounded-full backdrop-blur-xl shadow-[0_4px_24px_rgba(0,0,0,0.2)] mb-6">
+        <div class="w-8 h-8 rounded-full bg-gradient-to-tr from-brand-primary to-brand-secondary flex items-center justify-center shadow-[0_0_15px_rgba(37,99,235,0.6)] icon-glow">
+          <span class="text-white text-sm font-bold tracking-wider">K</span>
         </div>
-        <h1 class="text-white text-3xl font-light tracking-widest uppercase">Koda</h1>
+        <span class="text-white text-lg font-medium tracking-[0.2em] uppercase">Koda</span>
       </div>
-      <h2 class="text-white/60 text-lg font-light text-center px-4">Tocca un reparto per il biglietto</h2>
+      
+      <h2 class="text-transparent bg-clip-text bg-gradient-to-b from-white via-white/90 to-white/40 text-4xl md:text-5xl font-light text-center px-4 leading-tight tracking-tight">
+        Seleziona il tuo <br/><span class="font-bold">Reparto</span>
+      </h2>
     </div>
 
     <!-- Departments Grid -->
-    <div class="z-10 flex-1 flex items-center justify-center min-h-0">
+    <div class="relative z-20 flex-1 flex flex-col items-center justify-center w-full px-6 pb-6">
+      
       <!-- Loading state -->
-      <div *ngIf="departments.length === 0" class="flex flex-col items-center animate-pulse">
-        <div class="w-12 h-12 rounded-full border-4 border-white/20 border-t-white animate-spin mb-4"></div>
-        <span class="text-white/50 text-xl font-light">Caricamento reparti...</span>
-      </div>
-
-      <div *ngIf="departments.length > 0" class="grid grid-cols-2 gap-4 w-full max-w-2xl h-full max-h-[50vh]">
-        <button 
-          *ngFor="let dept of departments"
-          (click)="selectDepartment(dept)"
-          class="group relative overflow-hidden rounded-2xl border border-white/5 shadow-lg transition-all duration-300 active:scale-95 focus:outline-none flex flex-col items-center justify-center p-3 min-h-0"
-          [ngClass]="dept.color"
-        >
-          <div class="absolute inset-0 bg-gradient-to-b from-white/5 to-transparent pointer-events-none"></div>
-          <div class="flex flex-col items-center justify-center text-center">
-            <span class="text-4xl md:text-5xl mb-2 transform transition-transform duration-300 group-active:scale-110">{{ dept.icon }}</span>
-            <span class="text-lg md:text-xl font-medium tracking-wide uppercase leading-tight px-1">{{ dept.name }}</span>
+      @if (isLoading) {
+        <div class="flex flex-col items-center animate-entry" style="animation-delay: 0.2s;">
+          <div class="relative w-20 h-20 mb-6">
+            <div class="absolute inset-0 rounded-full border-4 border-white/10"></div>
+            <div class="absolute inset-0 rounded-full border-4 border-transparent border-t-brand-primary animate-spin"></div>
+            <div class="absolute inset-0 rounded-full border-4 border-transparent border-l-brand-secondary animate-[spin_1.5s_linear_infinite_reverse]"></div>
           </div>
-          
-          <!-- Ripple Effect -->
-          <span class="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <span class="w-full h-full bg-white/20 rounded-full opacity-0 group-active:animate-ripple"></span>
-          </span>
-        </button>
-      </div>
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-white to-white/50 text-2xl font-light tracking-widest uppercase animate-pulse">Caricamento...</span>
+        </div>
+      } @else if (hasError) {
+        <div class="flex flex-col items-center text-center p-10 bg-red-900/20 backdrop-blur-xl rounded-[2.5rem] border border-red-500/20 shadow-[0_8px_32px_rgba(220,38,38,0.15)] max-w-[80vw] animate-entry" style="animation-delay: 0.2s;">
+          <div class="w-20 h-20 bg-red-500/20 rounded-full flex items-center justify-center border border-red-500/40 mb-6 icon-glow">
+            <span class="text-5xl">⚠️</span>
+          </div>
+          <h2 class="text-3xl text-white font-semibold mb-3">Servizio Non Disponibile</h2>
+          <p class="text-lg text-white/60 mb-8 leading-relaxed">Impossibile comunicare con il sistema centrale.<br>Contatta un operatore.</p>
+          <button (click)="ngOnInit()" class="px-8 py-4 bg-gradient-to-r from-red-600 to-red-500 hover:from-red-500 hover:to-red-400 text-white font-bold rounded-2xl uppercase tracking-widest shadow-[0_0_20px_rgba(220,38,38,0.4)] interactive-card">
+            Riprova Ora
+          </button>
+        </div>
+      } @else {
+        <div class="grid grid-cols-2 gap-4 md:gap-6 w-full max-w-[90vw] md:max-w-2xl">
+          @for (dept of departments; track dept.id; let i = $index) {
+            
+            <!-- Entry animation wrapper (staggered based on index) -->
+            <div class="animate-entry w-full" style="animation-delay: {{ (i * 0.1) + 0.2 }}s">
+              
+              <!-- Continuous floating effect (offset so they don't move identically) -->
+              <div class="float-container w-full" style="animation-delay: {{ i * 0.3 }}s">
+                
+                <button 
+                  (click)="selectDepartment(dept)"
+                  class="group relative overflow-hidden rounded-[2.5rem] border border-white/10 bg-[#1a1a24]/40 backdrop-blur-2xl shadow-[0_15px_35px_rgba(0,0,0,0.3)] focus:outline-none flex flex-col items-center justify-center py-6 px-4 w-full premium-shimmer interactive-card aspect-[4/3] max-h-[160px]"
+                >
+                  <!-- Glass inner highlight -->
+                  <div class="absolute inset-0 bg-gradient-to-b from-white/10 to-transparent opacity-0 group-active:opacity-100 transition-opacity duration-300"></div>
+                  
+                  <!-- Ambient card glow based on dept color -->
+                  <div class="absolute inset-0 opacity-20 group-active:opacity-40 transition-opacity duration-300 mix-blend-screen" [ngClass]="dept.color"></div>
+                  
+                  <div class="relative z-10 flex flex-col items-center justify-center h-full w-full">
+                    <!-- Premium Icon Container with internal pulse -->
+                    <div class="w-16 h-16 md:w-20 md:h-20 mb-3 rounded-[1.25rem] bg-[#2a2a36]/50 border border-white/5 flex items-center justify-center shadow-inner backdrop-blur-md transform transition-transform duration-500 group-hover:-translate-y-2 icon-glow" [ngClass]="dept.color">
+                      <span class="text-3xl md:text-4xl drop-shadow-xl">{{ dept.icon }}</span>
+                    </div>
+                    
+                    <!-- Typography -->
+                    <span class="text-base md:text-lg font-bold tracking-widest uppercase text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] leading-tight">{{ dept.name }}</span>
+                  </div>
+                  
+                  <!-- Interactive Ripple -->
+                  <span class="absolute inset-0 flex items-center justify-center pointer-events-none z-20">
+                    <span class="w-full h-full bg-white/20 rounded-full opacity-0 group-active:animate-ripple"></span>
+                  </span>
+                </button>
+              </div>
+            </div>
+          }
+        </div>
+      }
     </div>
   </div>
 
   <!-- BOTTOM SECTION: Advertisements (35%) -->
-  <div class="flex-[35] relative w-full bg-black overflow-hidden shadow-[0_-15px_40px_rgba(0,0,0,0.6)]">
-    <div 
-      *ngFor="let ad of ads; let i = index"
-      class="absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out"
-      [class.opacity-100]="i === currentAdIndex"
-      [class.opacity-0]="i !== currentAdIndex"
-      [class.z-10]="i === currentAdIndex"
-      [class.z-0]="i !== currentAdIndex"
-    >
-      <img [src]="ad" class="w-full h-full object-cover" alt="Advertisement">
-      
-      <!-- Gradient overlay -->
-      <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent"></div>
-    </div>
+  <div class="flex-[35] relative w-full bg-black overflow-hidden shadow-[0_-20px_50px_rgba(0,0,0,0.8)] z-30">
+    <!-- Sleek separator bar -->
+    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-white/20 to-transparent z-40"></div>
+    
+    @for (ad of ads; track ad; let i = $index) {
+      <div 
+        class="absolute inset-0 w-full h-full transition-all duration-1500 ease-in-out transform"
+        [class.opacity-100]="i === currentAdIndex"
+        [class.opacity-0]="i !== currentAdIndex"
+        [class.scale-100]="i === currentAdIndex"
+        [class.scale-105]="i !== currentAdIndex"
+        [class.z-20]="i === currentAdIndex"
+        [class.z-10]="i !== currentAdIndex"
+      >
+        <img [src]="ad" class="w-full h-full object-cover" alt="Advertisement">
+        
+        <!-- Premium vignette overlay -->
+        <div class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-90"></div>
+      </div>
+    }
   </div>
 
 </div>

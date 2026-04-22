@@ -1,46 +1,52 @@
 <div class="w-full h-full min-h-screen bg-brand-light flex flex-col items-center justify-center relative overflow-hidden select-none">
   
   <!-- Loading State -->
-  <div *ngIf="isLoading" class="flex flex-col items-center">
-    <div class="w-32 h-32 mb-12 rounded-full border-8 border-gray-200 border-t-brand-primary animate-spin"></div>
-    <h2 class="text-4xl text-brand-dark font-light tracking-widest uppercase animate-pulse">Emissione biglietto...</h2>
-  </div>
+  @if (isLoading) {
+    <div class="flex flex-col items-center">
+      <div class="w-32 h-32 mb-12 rounded-full border-8 border-gray-200 border-t-brand-primary animate-spin"></div>
+      <h2 class="text-4xl text-brand-dark font-light tracking-widest uppercase animate-pulse">Emissione biglietto...</h2>
+    </div>
+  }
 
   <!-- Error State -->
-  <div *ngIf="error && !isLoading" class="flex flex-col items-center text-center p-16 bg-red-50 rounded-[3rem] shadow-xl border border-red-100">
-    <span class="text-8xl mb-8">⚠️</span>
-    <h2 class="text-5xl text-red-600 font-medium mb-6">Si è verificato un errore</h2>
-    <p class="text-3xl text-red-500/80">Impossibile generare il biglietto. Riprova tra poco.</p>
-  </div>
+  @if (error && !isLoading) {
+    <div class="flex flex-col items-center text-center p-16 bg-red-50 rounded-[3rem] shadow-xl border border-red-100">
+      <span class="text-8xl mb-8">⚠️</span>
+      <h2 class="text-5xl text-red-600 font-medium mb-6">Si è verificato un errore</h2>
+      <p class="text-3xl text-red-500/80">Impossibile generare il biglietto. Riprova tra poco.</p>
+    </div>
+  }
 
   <!-- Success State (Ticket) -->
-  <div *ngIf="ticket && !isLoading && !error" class="flex flex-col items-center animate-[bounce_1s_ease-out]">
-    
-    <!-- Ticket Card -->
-    <div class="bg-white pt-16 pb-20 px-12 md:px-24 rounded-[3rem] md:rounded-[4rem] shadow-[0_30px_60px_rgba(0,0,0,0.1)] flex flex-col items-center w-[90vw] max-w-[600px] border border-gray-100 relative overflow-hidden">
+  @if (ticket && !isLoading && !error) {
+    <div class="flex flex-col items-center animate-[bounce_1s_ease-out]">
       
-      <!-- Decorative top edge (receipt style) -->
-      <div class="absolute top-0 left-0 w-full h-6 bg-gradient-to-r from-brand-primary to-brand-secondary"></div>
-      
-      <span class="text-brand-primary text-3xl font-bold tracking-[0.2em] uppercase mb-16">Koda</span>
-      
-      <p class="text-gray-400 text-3xl font-light mb-4 uppercase tracking-wider">Il tuo turno per</p>
-      <h2 class="text-5xl text-brand-dark font-bold uppercase mb-16 tracking-wide">{{ ticket.reparto }}</h2>
-      
-      <div class="text-[10rem] md:text-[14rem] font-black text-brand-dark leading-none mb-16 tracking-tighter drop-shadow-sm">
-        {{ ticket.ticketNumber }}
+      <!-- Ticket Card -->
+      <div class="bg-white pt-16 pb-20 px-12 md:px-24 rounded-[3rem] md:rounded-[4rem] shadow-[0_30px_60px_rgba(0,0,0,0.1)] flex flex-col items-center w-[90vw] max-w-[600px] border border-gray-100 relative overflow-hidden">
+        
+        <!-- Decorative top edge (receipt style) -->
+        <div class="absolute top-0 left-0 w-full h-6 bg-gradient-to-r from-brand-primary to-brand-secondary"></div>
+        
+        <span class="text-brand-primary text-3xl font-bold tracking-[0.2em] uppercase mb-16">Koda</span>
+        
+        <p class="text-gray-400 text-3xl font-light mb-4 uppercase tracking-wider">Il tuo turno per</p>
+        <h2 class="text-5xl text-brand-dark font-bold uppercase mb-16 tracking-wide">{{ ticket.reparto }}</h2>
+        
+        <div class="text-[10rem] md:text-[14rem] font-black text-brand-dark leading-none mb-16 tracking-tighter drop-shadow-sm">
+          {{ ticket.ticketNumber }}
+        </div>
+        
+        <div class="flex items-center space-x-6 bg-gray-50 px-10 py-6 rounded-3xl border border-gray-100">
+          <span class="text-gray-400 text-2xl font-light uppercase tracking-wider">In attesa:</span>
+          <span class="text-brand-primary text-4xl font-bold">{{ ticket.estimatedWaitMinutes }}</span>
+        </div>
       </div>
       
-      <div class="flex items-center space-x-6 bg-gray-50 px-10 py-6 rounded-3xl border border-gray-100">
-        <span class="text-gray-400 text-2xl font-light uppercase tracking-wider">In attesa:</span>
-        <span class="text-brand-primary text-4xl font-bold">{{ ticket.estimatedWaitMinutes }}</span>
-      </div>
+      <p class="mt-20 text-4xl text-brand-dark/40 font-light tracking-widest uppercase animate-pulse">
+        Ritira lo scontrino
+      </p>
+      
     </div>
-    
-    <p class="mt-20 text-4xl text-brand-dark/40 font-light tracking-widest uppercase animate-pulse">
-      Ritira lo scontrino
-    </p>
-    
-  </div>
+  }
 
 </div>

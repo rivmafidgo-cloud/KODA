@@ -1,5 +1,4 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TicketService, TicketResponse } from '../../services/ticket';
 import { Subscription, delay, of } from 'rxjs';
@@ -7,7 +6,7 @@ import { Subscription, delay, of } from 'rxjs';
 @Component({
   selector: 'app-ticket',
   standalone: true,
-  imports: [CommonModule],
+  imports: [],
   templateUrl: './ticket.html',
   styleUrls: ['./ticket.scss']
 })
